@@ -11,9 +11,10 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
-const user = useSelector(store=>store.user)
+  const user = useSelector(store => store.user);
+
   const handleLogin = async () => {
-    if(user) return 
+    if (user) return;
     try {
       const res = await axios.post(
         BASE_URL + "/login",
@@ -31,51 +32,72 @@ const user = useSelector(store=>store.user)
       console.log(err);
     }
   };
+
   useEffect(() => {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user, navigate]);
+
   return (
-    <div className="flex justify-center mt-16">
-      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-        <legend className="fieldset-legend">Login</legend>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-purple-200 via-pink-200 to-yellow-200 px-4">
+      <div className="bg-white shadow-xl rounded-2xl w-full max-w-sm p-6 sm:p-8">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login to DevTinder</h2>
 
-        <label className="label">Email</label>
-        <input
-          type="email"
-          className="input"
-          value={emailId}
-          onChange={(e) => setEmailId(e.target.value)}
-          placeholder="Email"
-        />
+        {errorMsg && (
+          <p className="text-red-500 text-center mb-4">{errorMsg}</p>
+        )}
 
-        <label className="label">Password</label>
-        <input
-          type="password"
-          className="input"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">Email</label>
+            <input
+              type="email"
+              value={emailId}
+              onChange={(e) => setEmailId(e.target.value)}
+              placeholder="Enter your email"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+            />
+          </div>
 
-        <p className="text-red-500 justify-center">{errorMsg}</p>
-        <span
-            className="text-black-500  font-bold cursor-pointer"
-            onClick={() => navigate("/resetpassword")}
-          >Forgot password?</span>
-        <button className="btn btn-neutral mt-2" onClick={handleLogin}>
-          Login
-        </button>
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+            />
+          </div>
 
-        <p className=" mt-2">
-          New User?{" "}
-          <span
-            className="text-black-500 font-bold  cursor-pointer"
-            onClick={() => navigate("/signup")}
-          ><u>Signup</u></span>
-        </p>
-      </fieldset>
+          <div className="flex justify-end">
+            <span
+              className="text-purple-600 font-medium cursor-pointer hover:underline"
+              onClick={() => navigate("/resetpassword")}
+            >
+              Forgot password?
+            </span>
+          </div>
+
+          <button
+            onClick={handleLogin}
+            className="w-full bg-purple-600 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-purple-700 transition"
+          >
+            Login
+          </button>
+
+          <p className="text-center text-gray-600 mt-2">
+            New User?{" "}
+            <span
+              className="text-purple-600 font-semibold cursor-pointer hover:underline"
+              onClick={() => navigate("/signup")}
+            >
+              Signup
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
