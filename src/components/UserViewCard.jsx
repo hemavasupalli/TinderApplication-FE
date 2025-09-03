@@ -1,17 +1,7 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+
 
 const UserViewCard = ({ feed }) => {
-  const navigate = useNavigate();
-  const user = useSelector((store) => store.user);
-
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
-
   return (
     <div className="flex justify-center">
       <div className="card bg-base-100 shadow-sm w-64 mt-20">
