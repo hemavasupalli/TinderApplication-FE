@@ -31,7 +31,6 @@ const Profile = () => {
         },
         { withCredentials: true }
       );
-      console.log("hema",res)
       dispatch(addUser(res.data));
       setErrorMsg("Profile updated successfully ✅");
     } catch (err) {

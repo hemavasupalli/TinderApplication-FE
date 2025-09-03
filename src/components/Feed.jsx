@@ -1,31 +1,35 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addFeed } from "../utils/feedSlice";
+import UserViewCard from "./UserViewCard";
+import { BASE_URL } from "../constants";
 
 const Feed = () => {
-  const user = useSelector(store=>store.user)
-  const { firstName, lastName, age , gender , photoUrl , about}= user
-  return (
-    <div className="flex justify-center">
-    <div className="card bg-base-100 shadow-sm w-64 mt-20">
-    <figure>
-      <img
-        src={photoUrl}
-        alt="photo" />
-    </figure>
-    <div className="card-body">
-      <h2 className="card-title">{firstName +" "+lastName}</h2>
-      <p >{age +" ,"+gender}</p>
+  const feed = useSelector((store) => store.feed);
+  const dispatch = useDispatch();
 
-      <p>{about}</p>
-      <div className="card-actions  flex justify-center">
-        <button className="btn btn-primary">Ignore</button>
-        <button className="btn btn-secondary">Interested</button>
+  const getFeed = async () => {
+    if (feed.length > 0) return; 
+    try {
+      const res = await axios.get(BASE_URL + "/user/feed", {
+        withCredentials: true,
+      });
+      dispatch(addFeed(res.data.data));
+    } catch (err) {
+      console.error("Error fetching feed:", err);
+    }
+  };
 
-      </div>
-    </div>
-  </div>
-</div>
-  )
-}
+  useEffect(() => {
+    getFeed();
+  }, []);
 
-export default Feed
+  if (!feed || feed.length === 0) {
+    return <p className="text-center mt-10">No connections found</p>;
+  }
+
+  return <UserViewCard feed={feed[1]} />;
+};
+
+export default Feed;

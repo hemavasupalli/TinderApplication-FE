@@ -28,7 +28,6 @@ const SignUp = () => {
           },
           { withCredentials: true }
         );
-        console.log("hema",res)
         dispatch(addUser(res.data));
         navigate("/login");
         setErrorMsg("successfully signed Up , Please login ✅");

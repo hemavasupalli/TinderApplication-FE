@@ -19,7 +19,6 @@ const ResetPassword = () => {
         { emailId, password },
         { withCredentials: true }
       );
-      console.log("hema",res)
       dispatch(addUser(res.data.data));
       navigate("/");
     } catch (err) {
