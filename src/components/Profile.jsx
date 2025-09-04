@@ -21,10 +21,11 @@ const Profile = () => {
     try {
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
-        { firstName, lastName, age: Number(age), gender, photoUrl, about },
+        { firstName, lastName, age: age, gender, photoUrl, about },
         { withCredentials: true }
       );
-      dispatch(addUser(res.data));
+      console.log(res.data.data);
+      dispatch(addUser(res.data.data));
       setErrorMsg("Profile updated successfully ✅");
     } catch (err) {
       console.error(err);
