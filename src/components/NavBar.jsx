@@ -1,5 +1,4 @@
 import React from "react";
-import ThemeMode from "./ThemeMode";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -34,7 +33,6 @@ const NavBar = () => {
       </div>
 
       <div className="flex gap-4 items-center">
-        <ThemeMode />
         {user && (
           <div className="flex items-center gap-3">
             {/* Welcome text (always visible, no hover effect) */}
@@ -65,11 +63,20 @@ const NavBar = () => {
                 <li>
                   <Link to="/profile" className="justify-between">
                     Profile
-                    <span className="badge">New</span>
+                   
                   </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                <Link to="/connections" className="justify-between">
+                    Connections
+                   
+                  </Link>
+                </li>
+                <li>
+                <Link to="/requests" className="justify-between">
+                    Requests
+                   
+                  </Link>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>

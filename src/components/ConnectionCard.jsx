@@ -4,7 +4,7 @@ import { FaHeart, FaTimes } from "react-icons/fa";
 const ConnectionCard = ({ connection }) => {
   if (!connection) return null;
 
-  const { firstName, lastName, age, gender, about, photoUrl } = connection;
+  const { firstName, lastName, age, gender, about, photoUrl } = connection.fromUserId;
 
   return (
     <div className="flex justify-center mt-6 px-4">
