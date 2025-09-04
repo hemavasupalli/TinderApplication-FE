@@ -53,7 +53,7 @@ const Feed = () => {
   }
 
   return (
-    <div >
+    <div className="flex justify-center ">
      
         <UserViewCard feed={feed[0]} handleFeed={handleFeed} />
     

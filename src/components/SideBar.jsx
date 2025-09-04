@@ -9,7 +9,6 @@ const Sidebar = ({ user, connectionsCount }) => {
     { name: "Dashboard", path: "/", icon: <User className="w-5 h-5" /> },
     { name: "Connections", path: "/connections", icon: <Users className="w-5 h-5" />, badge: connectionsCount },
     { name: "Requests", path: "/requests", icon: <Bell className="w-5 h-5" /> },
-    { name: "Interests", path: "/interests", icon: <Heart className="w-5 h-5" /> },
     { name: "Profile", path: "/profile", icon: <User className="w-5 h-5" /> },
   ];
 
@@ -19,7 +18,7 @@ const Sidebar = ({ user, connectionsCount }) => {
       <div className="flex flex-col items-center p-6 border-b border-gray-200">
         <div className="w-20 h-20 rounded-full overflow-hidden mb-2">
           <img
-            src={user?.photoUrl || "/default-avatar.png"}
+            src={user?.photoUrl || "default-avatar.png"}
             alt="User"
             className="object-cover w-full h-full"
           />

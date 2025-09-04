@@ -61,7 +61,7 @@ const navigate = useNavigate();
           >
             <div className="w-10 h-10 rounded-full overflow-hidden">
               <img
-                src={user?.photoUrl || "/default-avatar.png"}
+                src={user?.photoUrl || "default-avatar.png"}
                 alt="User profile"
                 className="object-cover w-full h-full"
               />

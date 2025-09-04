@@ -28,7 +28,6 @@ await axios.post(
       const res = await axios.get(BASE_URL + "/user/requests", {
         withCredentials: true,
       });
-      console.log(res.data);
       dispatch(addRequest(res.data.data));
     } catch (err) {
       console.log(err);

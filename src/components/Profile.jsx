@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { BASE_URL } from "../constants";
 
 const Profile = () => {
-  const [firstName, setFirstName] = useState("Anil");
-  const [lastName, setLastName] = useState("Vasupalli");
-  const [age, setAge] = useState(26);
-  const [gender, setGender] = useState("male");
-  const [about, setAbout] = useState("This is my profile");
-  const [photoUrl, setPhotoUrl] = useState(
-    "https://i1.sndcdn.com/avatars-hafRCiz0IszwvkM7-CtNF1g-t1080x1080.jpg"
+  const user = useSelector((store) => store.user);
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [age, setAge] = useState(user?.age || "");
+  const [gender, setGender] = useState(user.gender || "");
+  const [about, setAbout] = useState(user.about || "");
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl || "default-avatar.png"
   );
 
   const [errorMsg, setErrorMsg] = useState("");

@@ -33,16 +33,21 @@ const Connections = () => {
     );
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10 flex flex-col gap-6">
-      {/* Title */}
+    <div className="max-w-4xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-semibold text-center text-gray-900 mb-6">
         Your Connections
       </h1>
 
-      {/* Vertical stack for cards */}
-      {connections.map((connection) => (
-        <ConnectionCard key={connection._id} connection={connection} showActions ={false}  />
-      ))}
+      {/* Scrollable list */}
+      <div className="flex flex-col gap-6 overflow-y-auto max-h-[80vh]">
+        {connections.map((connection) => (
+          <ConnectionCard
+            key={connection._id}
+            connection={connection}
+            showActions={false} // show accept/reject buttons
+          />
+        ))}
+      </div>
     </div>
   );
 };
