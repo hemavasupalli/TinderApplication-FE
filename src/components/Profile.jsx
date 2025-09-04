@@ -9,7 +9,7 @@ const Profile = () => {
   const [lastName, setLastName] = useState("Vasupalli");
   const [age, setAge] = useState(26);
   const [gender, setGender] = useState("male");
-  const [about, setAbout] = useState("this is my profile");
+  const [about, setAbout] = useState("This is my profile");
   const [photoUrl, setPhotoUrl] = useState(
     "https://i1.sndcdn.com/avatars-hafRCiz0IszwvkM7-CtNF1g-t1080x1080.jpg"
   );
@@ -21,113 +21,98 @@ const Profile = () => {
     try {
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
-        {
-          firstName,
-          lastName,
-          age: Number(age), // ensure it's a number
-          gender,
-          photoUrl,
-          about,
-        },
+        { firstName, lastName, age: Number(age), gender, photoUrl, about },
         { withCredentials: true }
       );
       dispatch(addUser(res.data));
       setErrorMsg("Profile updated successfully ✅");
     } catch (err) {
       console.error(err);
-      if (err?.response?.status === 400) {
-        setErrorMsg(err?.response?.data || "Bad request");
-      } else {
-        setErrorMsg("Something went wrong");
-      }
+      setErrorMsg(err?.response?.data || "Something went wrong");
     }
   };
 
   return (
-    <div className="flex justify-center">
-      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-        <legend className="fieldset-legend">Update Profile</legend>
+    <div className="flex flex-col md:flex-row justify-center gap-10 px-4 py-10 bg-gray-50 min-h-screen">
+      {/* Form Section */}
+      <fieldset className="bg-white shadow-lg rounded-2xl w-full max-w-md p-6">
+        <legend className="text-xl font-bold text-gray-900">Update Profile</legend>
 
-        <label className="label">First Name</label>
-        <input
-          type="text"
-          className="input"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          placeholder="First Name"
-        />
+        <div className="flex flex-col gap-4 mt-4">
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First Name"
+            className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+          />
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last Name"
+            className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+          />
+          <input
+            type="number"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            placeholder="Age"
+            className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+          />
+          <input
+            type="text"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            placeholder="Gender"
+            className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+          />
+          <input
+            type="text"
+            value={photoUrl}
+            onChange={(e) => setPhotoUrl(e.target.value)}
+            placeholder="Photo URL"
+            className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+          />
+          <textarea
+            value={about}
+            onChange={(e) => setAbout(e.target.value)}
+            placeholder="About you"
+            className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+          />
+        </div>
 
-        <label className="label">Last Name</label>
-        <input
-          type="text"
-          className="input"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          placeholder="Last Name"
-        />
+        {errorMsg && (
+          <p className="text-red-500 text-center mt-2">{errorMsg}</p>
+        )}
 
-        <label className="label">Age</label>
-        <input
-          type="number"
-          className="input"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
-          placeholder="Age"
-        />
-
-        <label className="label">Gender</label>
-        <input
-          type="text"
-          className="input"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          placeholder="Gender"
-        />
-
-        <label className="label">Photo Url</label>
-        <input
-          type="text"
-          className="input"
-          value={photoUrl}
-          onChange={(e) => setPhotoUrl(e.target.value)}
-          placeholder="Photo URL"
-        />
-
-        <label className="label">About</label>
-        <input
-          type="text"
-          className="input"
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
-          placeholder="About you"
-        />
-
-        <p className="text-red-500 text-center mt-2">{errorMsg}</p>
-
-        <button className="btn btn-neutral mt-4" onClick={handleSave}>
+        <button
+          onClick={handleSave}
+          className="w-full bg-black text-white py-2 rounded-lg mt-4 hover:bg-gray-800 transition"
+        >
           Save Profile
         </button>
       </fieldset>
-      <div className="card bg-base-100 shadow-sm w-64 mt-10">
-      <button className="btn btn-neutral mb-2" >
-          Preview Profile
-        </button>    <figure>
-      <img
-        src={photoUrl}
-        alt="photo" />
-    </figure>
-    <div className="card-body">
-      <h2 className="card-title">{firstName +" "+lastName}</h2>
-      <p >{age +" ,"+gender}</p>
 
-      <p>{about}</p>
-      <div className="card-actions  flex justify-center">
-        <button className="btn btn-primary">Ignore</button>
-        <button className="btn btn-secondary">Interested</button>
-
+      {/* Preview Card */}
+      <div className="bg-white shadow-lg rounded-2xl w-full max-w-sm p-4 flex flex-col items-center">
+        <img
+          src={photoUrl}
+          alt={`${firstName} ${lastName}`}
+          className="w-40 h-40 object-cover rounded-full mb-4"
+        />
+        <h2 className="text-xl font-bold text-gray-900">{firstName} {lastName}</h2>
+        <p className="text-gray-600 mb-2">{age}, {gender}</p>
+        <p className="text-gray-700 text-center mb-4">{about}</p>
+        <div className="flex gap-4">
+          <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+            Ignore
+          </button>
+          <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+            Interested
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
     </div>
   );
 };

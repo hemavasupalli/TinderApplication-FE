@@ -31,9 +31,9 @@ const Requests = () => {
 
   return (
     <div className="flex flex-col items-center my-10 space-y-6 px-2 md:px-0">
-      <h1 className="text-2xl font-bold mb-6">requests</h1>
-      {requests.map((connection) => (
-        <ConnectionCard key={connection._id} connection={connection} />
+      <h1 className="text-2xl font-bold mb-6">Requests</h1>
+      {requests.map((requests) => (
+        <ConnectionCard key={requests._id} connection={requests.fromUserId} showActions ={true}  />
       ))}
     </div>
   );

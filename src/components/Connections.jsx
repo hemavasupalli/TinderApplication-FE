@@ -26,13 +26,22 @@ const Connections = () => {
   }, []);
 
   if (!connections || connections.length === 0)
-    return <h1 className="text-center text-gray-500 mt-10">No connections found</h1>;
+    return (
+      <div className="flex justify-center items-center h-[60vh]">
+        <p className="text-gray-500 text-lg">No connections found</p>
+      </div>
+    );
 
   return (
-    <div className="flex flex-col items-center my-10 space-y-6 px-2 md:px-0">
-      <h1 className="text-2xl font-bold mb-6">Connections</h1>
+    <div className="max-w-2xl mx-auto px-4 py-10 flex flex-col gap-6">
+      {/* Title */}
+      <h1 className="text-3xl font-semibold text-center text-gray-900 mb-6">
+        Your Connections
+      </h1>
+
+      {/* Vertical stack for cards */}
       {connections.map((connection) => (
-        <ConnectionCard key={connection._id} connection={connection} />
+        <ConnectionCard key={connection._id} connection={connection} showActions ={false}  />
       ))}
     </div>
   );
