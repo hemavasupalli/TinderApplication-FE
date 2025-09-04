@@ -85,6 +85,15 @@ const SignUp = () => {
           >
             Sign Up
           </button>
+          <p className="text-center text-gray-700 mt-2">
+            Existing User?{" "}
+            <span
+              className="text-black font-semibold cursor-pointer hover:underline"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </span>
+          </p>
         </div>
       </div>
     </div>

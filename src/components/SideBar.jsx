@@ -1,15 +1,15 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Users, Heart, Bell, User } from "lucide-react";
+import {  Heart, Bell, User, Rss, List, FileText, MessageCircle, Layers, Grid, Clock } from "lucide-react";
 
-const Sidebar = ({ user, connectionsCount }) => {
+const Sidebar = ({ user, connectionsCount , requestsCount }) => {
   const location = useLocation();
 
   const menuItems = [
-    { name: "Dashboard", path: "/", icon: <User className="w-5 h-5" /> },
-    { name: "Connections", path: "/connections", icon: <Users className="w-5 h-5" />, badge: connectionsCount },
-    { name: "Requests", path: "/requests", icon: <Bell className="w-5 h-5" /> },
-    { name: "Profile", path: "/profile", icon: <User className="w-5 h-5" /> },
+    { name: "Feed", path: "/", icon: <Layers className="w-5 h-5" /> },
+    { name: "Connections", path: "/connections", icon: <Heart className="w-5 h-5" />, badge: connectionsCount },
+    { name: "Requests", path: "/requests", icon: <Bell className="w-5 h-5" /> ,badge: requestsCount },
+    { name: "Edit Profile", path: "/profile", icon: <User className="w-5 h-5" />  },
   ];
 
   return (
@@ -40,7 +40,7 @@ const Sidebar = ({ user, connectionsCount }) => {
             {item.icon}
             <span className="flex-1">{item.name}</span>
             {item.badge > 0 && (
-              <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
+              <span className="bg-black text-white text-xs font-bold rounded-full px-2 py-0.5">
                 {item.badge}
               </span>
             )}

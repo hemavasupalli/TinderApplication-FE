@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import { BASE_URL } from "../constants";
 import axios from "axios";
@@ -11,8 +11,11 @@ import { addUser } from "../utils/userSlice";
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // Get current route
   const userData = useSelector((store) => store.user);
   const connections = useSelector((store) => store.connection);
+  const requests = useSelector((store) => store.request);
+
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -34,6 +37,9 @@ const Body = () => {
     fetchUser();
   }, []);
 
+  // Only show sidebar on these pages
+  const showSidebar = ["/", "/connections", "/requests"].includes(location.pathname);
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-black">
       {/* Navbar */}
@@ -44,18 +50,23 @@ const Body = () => {
       {/* Main content */}
       <div className="flex flex-1 pt-4 px-4 sm:px-6 md:px-10">
         {/* Sidebar for desktop */}
-      {userData &&  <div className={`hidden md:block`}>
-          <SideBar user={userData} connectionsCount={connections?.length || 0} />
-        </div>
-}
+        {userData && showSidebar && (
+          <div className="hidden md:block">
+            <SideBar user={userData} connectionsCount={connections?.length || 0} requestsCount={requests?.length || 0} />
+          </div>
+        )}
+
         {/* Sidebar drawer for mobile */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 z-40 md:hidden bg-black/50" onClick={() => setSidebarOpen(false)}>
+        {sidebarOpen && showSidebar && (
+          <div
+            className="fixed inset-0 z-40 md:hidden bg-black/50"
+            onClick={() => setSidebarOpen(false)}
+          >
             <div
               className="absolute left-0 top-0 w-64 h-full bg-white shadow-lg p-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <SideBar user={userData} connectionsCount={connections?.length || 0} />
+              <SideBar user={userData} connectionsCount={connections?.length || 0} requestsCount={requests?.length || 0}  />
             </div>
           </div>
         )}

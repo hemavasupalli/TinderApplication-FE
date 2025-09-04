@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { removeUser } from "../utils/userSlice";
@@ -9,17 +9,33 @@ import { Users, Heart, Menu } from "lucide-react";
 const NavBar = ({ toggleSidebar }) => {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+
   const handleLogout = async () => {
     try {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
       dispatch(removeUser());
+      setDropdownOpen(false); // Close dropdown after logout
       navigate("/login");
     } catch (err) {
       console.error(err);
     }
   };
+
+  // Close dropdown if click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="bg-white shadow-md px-6 py-3 flex items-center justify-between sticky top-0 z-50">
@@ -35,26 +51,32 @@ const navigate = useNavigate();
         </Link>
       </div>
 
-      {/* Middle: Links (hidden on mobile) */}
+      {/* Middle: Links (always visible) */}
       {user && (
-        <div className="hidden md:flex gap-6 items-center">
+        <div className="flex gap-6 items-center">
           <Link
             to="/connections"
             className="flex items-center gap-1 relative hover:text-gray-600 transition"
+            onClick={() => setDropdownOpen(false)}
           >
             <Heart className="w-6 h-6" />
+            <span className="hidden md:inline">Connections</span>
           </Link>
 
           <Link
             to="/requests"
             className="flex items-center gap-1 hover:text-gray-600 transition"
+            onClick={() => setDropdownOpen(false)}
           >
             <Users className="w-5 h-5" />
+            <span className="hidden md:inline">Requests</span>
           </Link>
         </div>
       )}
+
+      {/* Right: Profile dropdown */}
       {user && (
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button
             className="btn btn-ghost btn-circle avatar hover:bg-gray-100"
             onClick={() => setDropdownOpen(!isDropdownOpen)}
@@ -74,6 +96,7 @@ const navigate = useNavigate();
                 <Link
                   to="/profile"
                   className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={() => setDropdownOpen(false)} // Close dropdown on click
                 >
                   Profile
                 </Link>
