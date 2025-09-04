@@ -1,7 +1,7 @@
 import React from "react";
 import { FaHeart, FaTimes } from "react-icons/fa";
 
-const ConnectionCard = ({ connection , showActions = false  }) => {
+const ConnectionCard = ({ connection , showActions = false ,handleRequests ,requestId}) => {
   if (!connection) return null;
 
   const { firstName, lastName, age, gender, about, photoUrl, location } = connection;
@@ -31,11 +31,12 @@ const ConnectionCard = ({ connection , showActions = false  }) => {
 
           {/* Buttons */}
           {showActions &&        (<div className="flex gap-3 mt-4">
-            <button className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition">
-              <FaTimes /> Ignore
+            <button onClick={() => handleRequests("rejected", requestId )}
+                className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition">
+              <FaTimes /> Reject
             </button>
-            <button className="flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition">
-              <FaHeart /> Interested
+            <button onClick={() => handleRequests("accepted", requestId, )} className="flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+              <FaHeart /> Accept
             </button>
           </div>)}
         </div>

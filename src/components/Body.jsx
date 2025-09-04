@@ -44,10 +44,10 @@ const Body = () => {
       {/* Main content */}
       <div className="flex flex-1 pt-4 px-4 sm:px-6 md:px-10">
         {/* Sidebar for desktop */}
-        <div className={`hidden md:block`}>
+      {userData &&  <div className={`hidden md:block`}>
           <SideBar user={userData} connectionsCount={connections?.length || 0} />
         </div>
-
+}
         {/* Sidebar drawer for mobile */}
         {sidebarOpen && (
           <div className="fixed inset-0 z-40 md:hidden bg-black/50" onClick={() => setSidebarOpen(false)}>

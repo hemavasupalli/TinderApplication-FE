@@ -1,11 +1,11 @@
 import React from "react";
 import { FaHeart, FaTimes } from "react-icons/fa";
 
-const UserViewCard = ({ feed }) => {
+const UserViewCard = ({ feed , handleFeed }) => {
   if (!feed) return null;
 
-  const { firstName, lastName, age, gender, about, photoUrl } = feed;
-
+  const {_id, firstName, lastName, age, gender, about, photoUrl } = feed;
+console.log(_id);
   return (
     <div className="flex justify-center mt-10 px-4">
       <div className="relative card bg-white shadow-lg rounded-xl w-full max-w-md md:max-w-lg overflow-hidden">
@@ -28,10 +28,11 @@ const UserViewCard = ({ feed }) => {
 
         {/* Buttons */}
         <div className="flex justify-center gap-4 p-4">
-          <button className="flex items-center gap-2 px-5 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+          <button onClick={() => handleFeed("ignored", _id)}
+          className="flex items-center gap-2 px-5 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
             <FaTimes /> Ignore
           </button>
-          <button className="flex items-center gap-2 px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+          <button onClick={() => handleFeed("interested", _id)} className="flex items-center gap-2 px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
             <FaHeart /> Interested
           </button>
         </div>

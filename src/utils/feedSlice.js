@@ -7,9 +7,10 @@ const feedSlice = createSlice({
     addFeed: (state, action) => {
       return action.payload; // replace with new feed array
     },
-    removeFeed: () => {
-      return []; // reset to empty array
-    },
+    removeFeed: (state,action) => {
+          const newArray = state.filter((req) => req._id !== action.payload);
+          return newArray;
+        },
   },
 });
 

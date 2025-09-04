@@ -6,10 +6,11 @@ import { BASE_URL } from "../constants";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const [firstName, setFirstName] = useState("Niha");
-  const [lastName, setLastName] = useState("Raghu");
-  const [emailId, setEmailId] = useState("priya@gmail.com");
-  const [password, setPassword] = useState("Priya@1234");
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,9 +22,9 @@ const SignUp = () => {
         { firstName, lastName, emailId, password },
         { withCredentials: true }
       );
-      dispatch(addUser(res.data));
+      dispatch(addUser(res.data.data));
       setErrorMsg("Successfully signed up! Please login ✅");
-      navigate("/login");
+      navigate("/profile");
     } catch (err) {
       if (err?.response?.status === 400) {
         setErrorMsg(err?.response?.data || "Bad request");
