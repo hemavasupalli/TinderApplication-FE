@@ -46,7 +46,7 @@ const NavBar = ({ toggleSidebar }) => {
           <Menu className="w-6 h-6" />
         </button>
 
-        <Link to="/" className="font-bold text-2xl text-black">
+        <Link    to={user ? "/" : "/login"}  className="font-bold text-2xl text-black">
           devTinder
         </Link>
       </div>

@@ -44,13 +44,9 @@ const Login = () => {
           Login to DevTinder
         </h2>
 
-        {errorMsg && (
-          <p className="text-red-500 text-center mb-4">{errorMsg}</p>
-        )}
 
         <div className="flex flex-col gap-5">
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Email</label>
             <input
               type="email"
               value={emailId}
@@ -61,7 +57,6 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Password</label>
             <input
               type="password"
               value={password}
@@ -70,7 +65,9 @@ const Login = () => {
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black transition"
             />
           </div>
-
+          {errorMsg && (
+          <p className="text-red-500 text-center mb-4">{errorMsg}</p>
+        )}
           <div className="flex justify-end">
             <span
               className="text-black font-medium cursor-pointer hover:underline"

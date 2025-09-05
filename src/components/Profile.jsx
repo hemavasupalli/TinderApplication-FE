@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
@@ -15,6 +15,8 @@ const Profile = () => {
   );
 
   const [errorMsg, setErrorMsg] = useState("");
+  const [toastMsg, setToastMsg] = useState("");
+
   const dispatch = useDispatch();
 
   const handleSave = async () => {
@@ -26,15 +28,31 @@ const Profile = () => {
       );
       console.log(res.data.data);
       dispatch(addUser(res.data.data));
-      setErrorMsg("Profile updated successfully ✅");
+      setToastMsg("Profile Saved successfully.");
     } catch (err) {
       console.error(err);
       setErrorMsg(err?.response?.data || "Something went wrong");
     }
   };
+  useEffect(() => {
+    if (toastMsg) {
+      const timer = setTimeout(() => {
+        setToastMsg("");
+      }, 1000); 
 
+      return () => clearTimeout(timer);
+    }
+  }, [toastMsg]);
   return (
 <div className="flex flex-col md:flex-row justify-center items-start gap-10 px-4 py-10 bg-gray-50 min-h-screen">
+{toastMsg && (
+        <div className="toast toast-top toast-center mt-12">
+          <div className="alert alert-success">
+            <span>{toastMsg}</span>
+          </div>
+        </div>
+      )}
+
   {/* Form Section */}
   <fieldset className="bg-white shadow-lg rounded-2xl w-full max-w-md p-6">
     <legend className="text-xl font-bold text-gray-900">Update Profile</legend>
@@ -61,13 +79,20 @@ const Profile = () => {
         placeholder="Age"
         className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
       />
-      <input
-        type="text"
-        value={gender}
-        onChange={(e) => setGender(e.target.value)}
-        placeholder="Gender"
-        className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
-      />
+ <select
+    id="gender"
+    value={gender}
+    onChange={(e) => setGender(e.target.value)}
+    className="w-full border border-gray-300 bg-white rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400 transition text-gray-700"
+  >
+    <option value="" disabled>
+      Select Gender
+    </option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+  </select>
+
       <input
         type="text"
         value={photoUrl}
