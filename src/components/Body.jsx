@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import { BASE_URL } from "../constants";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../utils/userSlice";
+import { addUser, removeUser } from "../utils/userSlice";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -26,13 +26,17 @@ const Body = () => {
       });
       dispatch(addUser(res.data));
     } catch (err) {
-      if (err?.response?.status === 401) navigate("/login");
+      if (err?.response?.status === 401) dispatch(removeUser());
+      navigate("/login");
       console.error(err);
     }
   };
 
   useEffect(() => {
-    if (!userData) navigate("/login");
+    if (!userData) {
+      navigate("/login");
+    }
+
     fetchUser();
   }, []);
 
