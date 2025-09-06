@@ -101,11 +101,15 @@ const Profile = () => {
         className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
       />
       <textarea
-        value={about}
-        onChange={(e) => setAbout(e.target.value)}
-        placeholder="About you"
-        className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
-      />
+  value={about}
+  onChange={(e) => { setAbout(e.target.value);
+
+  }}
+  placeholder="About you (max 50 characters)"
+  className="input w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+/>
+
+
     </div>
 
     {errorMsg && <p className="text-red-500 text-center mt-2">{errorMsg}</p>}
@@ -119,14 +123,14 @@ const Profile = () => {
   </fieldset>
 
 {/* Preview Card */}
-<div className="relative bg-white shadow-xl rounded-2xl w-full max-w-sm p-9 mt-4 flex flex-col items-center gap-4">
+<div className="relative bg-white shadow-xl rounded-2xl w-full h-112 max-w-xs p-6 mt-4 flex flex-col items-center gap-3">
   {/* Preview Sticker */}
-  <div className="absolute top-4 left-4 bg-black text-white font-bold text-xs px-3 py-1 rounded-full shadow-md">
+  <div className="absolute top-3 left-3 bg-black text-white font-bold text-[10px] px-2 py-1 rounded-full shadow-md">
     PREVIEW
   </div>
 
   {/* Profile Image */}
-  <div className="w-44 h-44 rounded-full overflow-hidden border-4 border-gray-200">
+  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200">
     <img
       src={photoUrl || "default-avatar.png"}
       alt={`${firstName} ${lastName}`}
@@ -136,21 +140,24 @@ const Profile = () => {
 
   {/* Profile Details */}
   <div className="text-center">
-    <h2 className="text-2xl font-bold text-gray-900">{firstName} {lastName}</h2>
-    <p className="text-gray-600">{age} years, {gender}</p>
-    <p className="text-gray-700 mt-2">{about || "No description yet."}</p>
+    <h2 className="text-xl font-bold text-gray-900 truncate">{firstName} {lastName}</h2>
+    <p className="text-sm text-gray-600">{age} yrs, {gender}</p>
+    <p className="text-gray-600 text-xs mt-1 leading-snug text-justify">
+      {about || "No description yet."}
+    </p>
   </div>
 
   {/* Action Buttons */}
-  <div className="flex gap-4 mt-4">
-    <button className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
+  <div className="flex gap-3 mt-3">
+    <button className="bg-black text-white px-4 py-1.5 rounded-full text-sm hover:bg-gray-800 transition">
       Ignore
     </button>
-    <button className="bg-white text-black border border-black px-6 py-2 rounded-full hover:bg-gray-200 transition">
+    <button className="bg-white text-black border border-black px-4 py-1.5 rounded-full text-sm hover:bg-gray-200 transition">
       Interested
     </button>
   </div>
 </div>
+
 
 </div>
 
