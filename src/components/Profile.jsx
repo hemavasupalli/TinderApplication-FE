@@ -9,9 +9,9 @@ const Profile = () => {
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [age, setAge] = useState(user?.age || "");
-  const [gender, setGender] = useState(user.gender || "");
-  const [about, setAbout] = useState(user.about || "");
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl || "default-avatar.png"
+  const [gender, setGender] = useState(user?.gender || "");
+  const [about, setAbout] = useState(user?.about || "");
+  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "default-avatar.png"
   );
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -31,8 +31,10 @@ const Profile = () => {
       setToastMsg("Profile Saved successfully.");
     } catch (err) {
       console.error(err);
-      setErrorMsg(err?.response?.data || "Something went wrong");
-    }
+      setErrorMsg(
+        err?.response?.data?.message || "Something went wrong"
+      );
+          }
   };
   useEffect(() => {
     if (toastMsg) {

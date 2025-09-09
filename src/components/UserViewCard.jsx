@@ -1,16 +1,20 @@
 import React from "react";
 import { FaHeart, FaTimes } from "react-icons/fa";
+import { formatLastSeen } from "../utils/socket";
 
 const UserViewCard = ({ feed, handleFeed }) => {
   if (!feed) return null;
 
-  const { _id, firstName, lastName, age, gender, about, photoUrl } = feed;
+  const { _id, firstName, lastName, age, gender, about, photoUrl , isOnline } = feed;
 
   return (
     <div className="relative bg-white shadow-xl rounded-2xl overflow-hidden w-full max-w-md flex flex-col min-h-[32rem]">
       
       {/* Profile Image */}
       <figure className="relative w-full h-95 overflow-hidden">
+      <div className="absolute top-3 left-3 bg-black text-white font-bold text-[10px] px-2 py-1 rounded-full shadow-md">
+    { formatLastSeen(isOnline)}
+  </div>
         <img
           src={photoUrl || "/default-avatar.png"}
           alt={`${firstName} ${lastName}`}

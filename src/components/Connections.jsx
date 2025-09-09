@@ -1,4 +1,3 @@
-// Connections.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnection } from "../utils/connectionsSlice";
@@ -12,14 +11,17 @@ const Connections = () => {
   const connections = useSelector((store) => store.connection);
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState(null);
+  console.log("Connections Component Rendered. selectedUser:", selectedUser);
 
   const fetchConnections = async () => {
     if (connections.length > 0) return;
     try {
-      const res = await axios.get(BASE_URL + "/user/connections", { withCredentials: true });
+      const res = await axios.get(`${BASE_URL}/user/connections`, { withCredentials: true });
+      console.log("Fetched Connections:", res.data.data);
+
       dispatch(addConnection(res.data.data));
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching connections:", err);
     }
   };
 
@@ -28,9 +30,16 @@ const Connections = () => {
   }, []);
 
   return (
-    <div className="flex h-150 bg-gray-50">
-      <ConnectionsList connections={connections} onSelectUser={setSelectedUser} />
-      <ChatWindow selectedUser={selectedUser} />
+    <div className="flex flex-col md:flex-row h-140 bg-gray-50">
+      {/* Connections list */}
+      <div className="flex-shrink-0 w-full md:w-72 border-r border-gray-200">
+        <ConnectionsList connections={connections} onSelectUser={setSelectedUser} />
+      </div>
+
+      {/* Chat window */}
+      <div className="flex-1">
+        <ChatWindow selectedUser={selectedUser} />
+      </div>
     </div>
   );
 };
