@@ -33,7 +33,6 @@ const Feed = () => {
           withCredentials: true,
         }
       );
-      console.log(feed[0]._id);
 
       dispatch(removeFeed(id));
     } catch (err) {

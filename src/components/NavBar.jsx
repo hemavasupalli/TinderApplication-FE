@@ -5,6 +5,8 @@ import { removeUser } from "../utils/userSlice";
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import { Users, Heart, Menu, X, User, LogOut } from "lucide-react";
+import { removeConnection } from "../utils/connectionsSlice";
+import { removeRequest } from "../utils/requestSlice";
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
@@ -18,6 +20,8 @@ const NavBar = () => {
     try {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
       dispatch(removeUser());
+      dispatch(removeConnection());
+      dispatch(removeRequest());
       setMobileMenuOpen(false);
       setProfileDropdownOpen(false);
       navigate("/login");

@@ -3,16 +3,27 @@ import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { removeUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../constants";
 
-export default function useAutoLogout() {
+export default function useAutoLogout(userId) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     let idleTimer, sessionTimer;
 
-    const logout = () => {
-      Cookies.remove("token"); 
+    const logout = async () => {
+      try {
+        if (userId) {
+          await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
+
+        }
+      } catch (err) {
+        console.error("Logout API error:", err);
+      }
+
+      Cookies.remove("token");
       dispatch(removeUser());
       navigate("/login");
     };
@@ -38,5 +49,5 @@ export default function useAutoLogout() {
       window.removeEventListener("mousemove", resetIdleTimer);
       window.removeEventListener("keydown", resetIdleTimer);
     };
-  }, [dispatch, navigate]);
+  }, []);
 }

@@ -26,7 +26,6 @@ const Profile = () => {
         { firstName, lastName, age: age, gender, photoUrl, about },
         { withCredentials: true }
       );
-      console.log(res.data.data);
       dispatch(addUser(res.data.data));
       setToastMsg("Profile Saved successfully.");
     } catch (err) {

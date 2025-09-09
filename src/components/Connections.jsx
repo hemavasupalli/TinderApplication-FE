@@ -11,13 +11,11 @@ const Connections = () => {
   const connections = useSelector((store) => store.connection);
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState(null);
-  console.log("Connections Component Rendered. selectedUser:", selectedUser);
-
+  
   const fetchConnections = async () => {
     if (connections.length > 0) return;
     try {
       const res = await axios.get(`${BASE_URL}/user/connections`, { withCredentials: true });
-      console.log("Fetched Connections:", res.data.data);
 
       dispatch(addConnection(res.data.data));
     } catch (err) {
