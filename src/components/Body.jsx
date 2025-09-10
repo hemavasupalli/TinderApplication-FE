@@ -36,11 +36,10 @@ const Body = () => {
     if (!userData) {
       navigate("/login");
     }
-
     fetchUser();
   }, []);
 
-  const showSidebar = ["/", "/requests"].includes(location.pathname);
+  const showSidebar = ["/","/profile" ,"/connections","/requests"].includes(location.pathname);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-black">

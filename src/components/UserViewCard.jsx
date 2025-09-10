@@ -5,16 +5,18 @@ import { formatLastSeen } from "../utils/socket";
 const UserViewCard = ({ feed, handleFeed }) => {
   if (!feed) return null;
 
-  const { _id, firstName, lastName, age, gender, about, photoUrl , isOnline } = feed;
+  const { _id, firstName, lastName, age, gender, about, photoUrl , isOnline , lastSeen } = feed;
 
   return (
     <div className="relative bg-white shadow-xl rounded-2xl overflow-hidden w-full max-w-md flex flex-col min-h-[32rem]">
       
       {/* Profile Image */}
       <figure className="relative w-full h-95 overflow-hidden">
-      <div className="absolute top-3 left-3 bg-black text-white font-bold text-[10px] px-2 py-1 rounded-full shadow-md">
-    { formatLastSeen(isOnline)}
-  </div>
+      <div className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full shadow-md
+          ${isOnline ? "bg-green-500 text-white" : "bg-gray-800 text-gray-200"}`}>
+          {isOnline ? "Online" : lastSeen ? formatLastSeen(false, lastSeen) : "Offline"}
+        </div>
+
         <img
           src={photoUrl || "/default-avatar.png"}
           alt={`${firstName} ${lastName}`}

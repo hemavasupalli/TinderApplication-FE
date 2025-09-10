@@ -8,7 +8,7 @@ const Sidebar = ({ user, connectionsCount , requestsCount }) => {
   const menuItems = [
     { name: "Feed", path: "/", icon: <Layers className="w-5 h-5" /> },
     { name: "Connections", path: "/connections", icon: <Heart className="w-5 h-5" />, badge: connectionsCount },
-    { name: "Requests", path: "/requests", icon: <Bell className="w-5 h-5" /> ,badge: requestsCount },
+    { name: "Interests", path: "/requests", icon: <Bell className="w-5 h-5" /> ,badge: requestsCount },
     { name: "Edit Profile", path: "/profile", icon: <User className="w-5 h-5" />  },
   ];
 

@@ -120,7 +120,7 @@ const SignUp = () => {
 
           <button
             onClick={step === 1 ? handleSignUp : handleVerifyOtp}
-            className="w-full bg-red-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-gray-800 transition mt-2"
+            className="w-full bg-black text-white font-semibold py-2 rounded-lg shadow-md hover:bg-gray-800 transition mt-2"
           >
             {step === 1 ? "Sign Up" : "Verify OTP"}
           </button>

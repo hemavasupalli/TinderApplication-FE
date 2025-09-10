@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeUser } from "../utils/userSlice";
 import axios from "axios";
 import { BASE_URL } from "../constants";
-import { Users, Heart, Menu, X, User, LogOut } from "lucide-react";
+import { Users, Heart, Menu, X, User, LogOut, Send, MessageCircle } from "lucide-react";
 import { removeConnection } from "../utils/connectionsSlice";
-import { removeRequest } from "../utils/requestSlice";
+import { removeAllRequests } from "../utils/requestSlice";
+import { removeAllFeed } from "../utils/feedSlice";
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
@@ -21,11 +22,14 @@ const NavBar = () => {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
       dispatch(removeUser());
       dispatch(removeConnection());
-      dispatch(removeRequest());
+      dispatch(removeAllFeed());
+      dispatch(removeAllRequests());
       setMobileMenuOpen(false);
       setProfileDropdownOpen(false);
       navigate("/login");
     } catch (err) {
+      dispatch(removeUser());
+      navigate("/login");
       console.error(err);
     }
   };
@@ -37,8 +41,14 @@ const NavBar = () => {
         setProfileDropdownOpen(false);
       }
     };
+    
     document.addEventListener("mousedown", handleClickOutside);
+    if (user) {
+      setMobileMenuOpen(false);
+      setProfileDropdownOpen(false);
+    }
     return () => document.removeEventListener("mousedown", handleClickOutside);
+
   }, []);
 
   return (
@@ -53,19 +63,17 @@ const NavBar = () => {
         {user && (
           <div className="hidden md:flex items-center gap-6">
             <Link
-              to="/connections"
-              className="group flex items-center gap-1 px-2 py-1 rounded hover:bg-gray-100 transition"
-            >
-              <Heart className="w-5 h-5 text-gray-700 group-hover:text-red-500 transition" />
-              <span className="text-gray-800 group-hover:text-red-500 transition">Connections</span>
-            </Link>
-            <Link
-              to="/requests"
-              className="group flex items-center gap-1 px-2 py-1 rounded hover:bg-gray-100 transition"
-            >
-              <Users className="w-5 h-5 text-gray-700 group-hover:text-blue-500 transition" />
-              <span className="text-gray-800 group-hover:text-blue-500 transition">Requests</span>
-            </Link>
+  to="/messages"
+  className="group flex items-center gap-1 px-2 py-1 rounded transition 
+             hover:bg-black hover:text-white"
+>
+  <Send className="w-5 h-5 text-gray-700 group-hover:text-white transition" />
+  <span className="text-gray-800 group-hover:text-white transition">
+    Messages
+  </span>
+</Link>
+
+        
 
             {/* Profile Dropdown */}
             <div className="relative" ref={dropdownRef}>
@@ -121,6 +129,14 @@ const NavBar = () => {
       {/* Mobile Menu (push-down) */}
       {isMobileMenuOpen && user && (
         <div className="md:hidden bg-white border-t border-gray-200 px-4 py-2 flex flex-col gap-2">
+          <Link
+            to="/messages"
+            className="group flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 transition"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <MessageCircle className="w-5 h-5 text-gray-700 group-hover:text-red-500 transition" />
+            <span className="text-gray-800 group-hover:text-red-500 transition">Messages</span>
+          </Link>
           <Link
             to="/connections"
             className="group flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 transition"

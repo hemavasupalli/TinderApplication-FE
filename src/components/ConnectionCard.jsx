@@ -24,7 +24,7 @@ const ConnectionCard = ({ connection, showActions = false, handleRequests,reques
           <h2 className="text-xl font-semibold text-gray-900">
             {firstName} {lastName} 
           </h2>
-          <p className="text-gray-500 mb-2">{age}, {gender}</p>
+          <p className="text-gray-500 mb-2">{age} Years, {gender}</p>
           <p className="text-gray-700 text-sm">{about}</p>
         </div>
 
