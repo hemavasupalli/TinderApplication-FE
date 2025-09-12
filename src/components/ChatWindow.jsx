@@ -9,20 +9,20 @@ const ChatWindow = ({ selectedUser, onBack }) => {
   const [newMessage, setNewMessage] = useState("");
   const user = useSelector((store) => store.user);
   const messagesEndRef = useRef(null);
+  const socketRef = useRef(null);
 
   const userId = user?._id;
   const selectedUserId = selectedUser?._id;
 
-  const scrollToBottom = () =>
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // Scroll to bottom whenever messages change
+  const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(scrollToBottom, [messages]);
 
+  // Fetch chat history
   const fetchChat = async () => {
     if (!selectedUserId) return;
     try {
-      const res = await axios.get(`${BASE_URL}/chat/${selectedUserId}`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(`${BASE_URL}/chat/${selectedUserId}`, { withCredentials: true });
       const formatted = res.data.messages.map((msg) => ({
         _id: msg._id,
         text: msg.text,
@@ -35,15 +35,14 @@ const ChatWindow = ({ selectedUser, onBack }) => {
     }
   };
 
+  // Setup socket connection once
   useEffect(() => {
     if (!userId || !selectedUserId) return;
-    const socket = createSocketConnection();
 
-    socket.emit("joinChat", {
-      userId,
-      selectedUserId,
-      firstName: user?.firstName,
-    });
+    const socket = createSocketConnection();
+    socketRef.current = socket;
+
+    socket.emit("joinChat", { userId, selectedUserId, firstName: user?.firstName });
 
     socket.on("messageReceived", (msg) => {
       setMessages((prev) => [
@@ -58,14 +57,28 @@ const ChatWindow = ({ selectedUser, onBack }) => {
     });
 
     fetchChat();
+
     return () => socket.disconnect();
   }, [userId, selectedUserId]);
 
+  // Send message (optimistic update)
   const handleSend = () => {
     if (!newMessage.trim()) return;
-    const socket = createSocketConnection();
-    socket.emit("sendMessage", { userId, selectedUserId, text: newMessage });
-    setNewMessage(""); // ✅ clear input only, no duplicate append
+
+    const messageToSend = {
+      _id: Date.now(),
+      text: newMessage,
+      time: formatTime(new Date()),
+      sender: "self",
+    };
+
+    // Append locally for immediate UI feedback
+    setMessages((prev) => [...prev, messageToSend]);
+
+    // Emit to server
+    socketRef.current.emit("sendMessage", { userId, selectedUserId, text: newMessage });
+
+    setNewMessage("");
   };
 
   if (!selectedUser) {
@@ -77,20 +90,14 @@ const ChatWindow = ({ selectedUser, onBack }) => {
   }
 
   return (
-<div className="flex flex-col h-120 md:h-140 bg-gray-100">
-{/* Header */}
-<div className="flex items-center p-4 bg-white border-b shadow-sm">
-{/* Back button only on mobile */}
+    <div className="flex flex-col h-120 md:h-140 bg-gray-100">
+      {/* Header */}
+      <div className="flex items-center p-4 bg-white border-b shadow-sm">
         {onBack && (
-          <button
-            onClick={onBack}
-            className="mr-3 text-gray-600 hover:text-gray-800 md:hidden"
-          >
+          <button onClick={onBack} className="mr-3 text-gray-600 hover:text-gray-800 md:hidden">
             ←
           </button>
         )}
-
-        {/* Profile picture */}
         <div className="relative">
           <img
             src={selectedUser.photoUrl || "https://via.placeholder.com/40"}
@@ -98,21 +105,16 @@ const ChatWindow = ({ selectedUser, onBack }) => {
             className="w-10 h-10 rounded-full mr-3"
           />
         </div>
-
-        {/* User info */}
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-gray-900">
-              {selectedUser.firstName}
-            </span>
-            {/* Inline status dot beside name */}
+            <span className="font-semibold text-gray-900">{selectedUser.firstName}</span>
             <span
               className={`w-2 h-2 rounded-full ${
                 selectedUser.isOnline
-                ? "bg-green-500"
-                : selectedUser.lastSeen
-                ? "bg-orange-300"
-                : "bg-gray-400"
+                  ? "bg-green-500"
+                  : selectedUser.lastSeen
+                  ? "bg-orange-300"
+                  : "bg-gray-400"
               }`}
             ></span>
           </div>
@@ -125,13 +127,11 @@ const ChatWindow = ({ selectedUser, onBack }) => {
       </div>
 
       {/* Chat messages */}
-      <div className="flex-1 flex flex-col justify-end overflow-y-auto p-4 space-y-2">
-      {messages.map((msg) => (
+      <div className="flex-1 flex flex-col overflow-y-auto p-4 space-y-2">
+        {messages.map((msg) => (
           <div
             key={msg._id}
-            className={`flex ${
-              msg.sender === "self" ? "justify-end" : "justify-start"
-            }`}
+            className={`flex ${msg.sender === "self" ? "justify-end" : "justify-start"}`}
           >
             {msg.sender === "other" && (
               <img
@@ -141,16 +141,13 @@ const ChatWindow = ({ selectedUser, onBack }) => {
             )}
             <div
               className={`max-w-[70%] px-4 py-2 rounded-lg ${
-                
                 msg.sender === "self"
                   ? "bg-black text-white rounded-br-none"
                   : "bg-white text-gray-900 rounded-bl-none shadow"
               }`}
             >
               {msg.text}
-              <div className="text-xs text-gray-200 mt-1 text-right">
-                {msg.time}
-              </div>
+              <div className="text-xs text-gray-200 mt-1 text-right">{msg.time}</div>
             </div>
           </div>
         ))}
@@ -159,7 +156,7 @@ const ChatWindow = ({ selectedUser, onBack }) => {
 
       {/* Input */}
       <div className="flex p-2 border-t bg-white">
-      <input
+        <input
           type="text"
           placeholder="Type a message..."
           value={newMessage}
