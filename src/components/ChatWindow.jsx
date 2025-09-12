@@ -44,21 +44,28 @@ const ChatWindow = ({ selectedUser, onBack }) => {
 
     socket.emit("joinChat", { userId, selectedUserId, firstName: user?.firstName });
 
-    socket.on("messageReceived", (msg) => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          _id: msg._id,
-          text: msg.text,
-          time: formatTime(msg.updatedAt || msg.createdAt),
-          sender: msg.senderId === userId ? "self" : "other",
-        },
-      ]);
-    });
+    const handleMessage = (msg) => {
+      if (msg.senderId !== userId) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            _id: msg._id,
+            text: msg.text,
+            time: formatTime(msg.updatedAt || msg.createdAt),
+            sender: "other",
+          },
+        ]);
+      }
+    };
+
+    socket.on("messageReceived", handleMessage);
 
     fetchChat();
 
-    return () => socket.disconnect();
+    return () => {
+      socket.off("messageReceived", handleMessage); // clean listener
+      socket.disconnect();
+    };
   }, [userId, selectedUserId]);
 
   // Send message (optimistic update)
