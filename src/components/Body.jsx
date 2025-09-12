@@ -42,8 +42,8 @@ const Body = () => {
   const showSidebar = ["/","/profile" ,"/connections","/requests"].includes(location.pathname);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 text-black">
-      <div className="sticky top-0 z-50">
+<div className="flex flex-col  top-0 fixed left-0 w-full h-screen bg-gray-50 text-black">
+<div className="sticky top-0 z-50">
         <NavBar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
       </div>
 

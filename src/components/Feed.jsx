@@ -1,15 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addFeed, removeFeed } from "../utils/feedSlice.js";
 import UserViewCard from "./UserViewCard";
 import { BASE_URL } from "../constants";
 
 const Feed = () => {
-  //const feed = useSelector((store) => store.feed);
+  const feed = useSelector((store) => store.feed);
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [filteredFeed, setFilteredFeed] = useState([]);
 
   // Fetch feed
   const fetchFeed = async () => {
@@ -18,16 +17,11 @@ const Feed = () => {
       const res = await axios.get(`${BASE_URL}/user/feed`, {
         withCredentials: true,
       });
-      const allUsers = res.data.data;
+
 
       // Filter opposite gender
-      const oppositeGender = user.gender === "Female" ? "Male" : "Female";
-      const filtered = allUsers.filter(
-        (u) => u.gender === oppositeGender && u._id !== user._id
-      );
 
-      dispatch(addFeed(filtered));
-      setFilteredFeed(filtered);
+      dispatch(addFeed(res.data.data));
     } catch (err) {
       console.error("Error fetching feed:", err);
     }
@@ -38,7 +32,6 @@ const Feed = () => {
     try {
       await axios.post(`${BASE_URL}/send/${status}/${id}`, {}, { withCredentials: true });
       dispatch(removeFeed(id));
-      setFilteredFeed((prev) => prev.filter((f) => f._id !== id));
     } catch (err) {
       console.error(err);
     }
@@ -48,7 +41,7 @@ const Feed = () => {
     fetchFeed();
   }, [user]);
 
-  if (!filteredFeed || filteredFeed.length === 0) {
+  if (!feed || feed.length === 0) {
     return (
       <div className="flex justify-center items-center h-[50vh] text-gray-500">
         No feed available
@@ -57,11 +50,14 @@ const Feed = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-[70vh]">
+    <div className="flex justify-center items-center h-screen p-4 bg-gray-50">
       {/* Display top profile */}
-      <UserViewCard feed={filteredFeed[0]} handleFeed={handleFeed} />
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl h-full">
+        <UserViewCard feed={feed[0]} handleFeed={handleFeed} className="h-full" />
+      </div>
     </div>
   );
+  
 };
 
 export default Feed;

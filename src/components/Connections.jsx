@@ -41,24 +41,24 @@ const Connections = () => {
     );
 
   return (
-    <div className="flex flex-col items-center my-5 px-2 md:px-0 w-full">
-      <h1 className="text-xl font-bold text-gray-900 mb-4 text-center tracking-wide relative">
-        Connections
-        <div className="w-16 h-1 bg-black mx-auto mt-2 rounded-full"></div>
-      </h1>
-
-      {/* Scrollable list */}
-      <div className="w-full max-w-3xl max-h-[70vh] overflow-y-auto space-y-4 pr-2">
-        {connections.map((connection) => (
-          <ConnectionCard
-            key={connection._id}
-            connection={connection}
-            requestId={connection._id}
-            showActions={false}
-          />
-        ))}
-      </div>
+    <div className="flex flex-col items-center my-5 px-2 sm:px-4 w-full">
+    <h1 className="text-xl font-bold text-gray-900 mb-4 text-center tracking-wide relative">
+      Connections
+      <div className="w-16 h-1 bg-black mx-auto mt-2 rounded-full"></div>
+    </h1>
+  
+    <div className="w-full max-w-xl max-h-[70vh] overflow-y-auto space-y-4 pr-2 sm:pr-4">
+      {connections.map((connection) => (
+        <ConnectionCard
+          key={connection._id}
+          connection={connection}
+          requestId={connection._id}
+          showActions={false}
+        />
+      ))}
     </div>
+  </div>
+  
   );
 };
 

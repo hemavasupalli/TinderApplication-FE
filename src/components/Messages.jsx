@@ -11,12 +11,19 @@ const Messages = () => {
   const connections = useSelector((store) => store.connection);
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState(null);
-  
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const fetchConnections = async () => {
     if (connections.length > 0) return;
     try {
       const res = await axios.get(`${BASE_URL}/user/connections`, { withCredentials: true });
-
       dispatch(addConnection(res.data.data));
     } catch (err) {
       console.error("Error fetching connections:", err);
@@ -28,16 +35,26 @@ const Messages = () => {
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row h-140 bg-gray-50">
+    <div className="flex  h-100   bg-gray-50">
       {/* Connections list */}
-      <div className="flex-shrink-0 w-full md:w-72 border-r border-gray-200">
-        <ConnectionsList connections={connections} onSelectUser={setSelectedUser} />
-      </div>
+      {(selectedUser === null || !isMobile) && (
+        <div className="flex-shrink-0 w-full md:w-72 border-r border-gray-200">
+          <ConnectionsList
+            connections={connections}
+            onSelectUser={setSelectedUser}
+          />
+        </div>
+      )}
 
       {/* Chat window */}
-      <div className="flex-1">
-        <ChatWindow selectedUser={selectedUser} />
-      </div>
+      {(selectedUser !== null || !isMobile) && (
+        <div className="flex-1">
+          <ChatWindow
+            selectedUser={selectedUser}
+            onBack={isMobile ? () => setSelectedUser(null) : undefined}
+          />
+        </div>
+      )}
     </div>
   );
 };

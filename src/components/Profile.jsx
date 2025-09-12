@@ -46,7 +46,7 @@ const Profile = () => {
     }
   }, [toastMsg]);
   return (
-<div className="flex flex-col md:flex-row justify-center items-start gap-10 px-4 py-10 bg-gray-50 min-h-screen">
+<div className="flex flex-col md:flex-row justify-center items-start gap-10 px-4 py-5 bg-gray-50 ">
 {toastMsg && (
         <div className="toast toast-top toast-center mt-12">
           <div className="alert alert-success">
@@ -59,7 +59,7 @@ const Profile = () => {
   <fieldset className="bg-white shadow-lg rounded-2xl w-full max-w-md p-6">
     <legend className="text-xl font-bold text-gray-900">Update Profile</legend>
 
-    <div className="flex flex-col gap-4 mt-4">
+    <div className="flex flex-col gap-4">
       <input
         type="text"
         value={firstName}
@@ -123,42 +123,6 @@ const Profile = () => {
       Save Profile
     </button>
   </fieldset>
-
-{/* Preview Card */}
-<div className="relative bg-white shadow-xl rounded-2xl w-full h-112 max-w-xs p-6 mt-4 flex flex-col items-center gap-3">
-  {/* Preview Sticker */}
-  <div className="absolute top-3 left-3 bg-black text-white font-bold text-[10px] px-2 py-1 rounded-full shadow-md">
-    PREVIEW
-  </div>
-
-  {/* Profile Image */}
-  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200">
-    <img
-      src={photoUrl || "default-avatar.png"}
-      alt={`${firstName} ${lastName}`}
-      className="object-cover w-full h-full"
-    />
-  </div>
-
-  {/* Profile Details */}
-  <div className="text-center">
-    <h2 className="text-xl font-bold text-gray-900 truncate">{firstName} {lastName}</h2>
-    <p className="text-sm text-gray-600">{age} yrs, {gender}</p>
-    <p className="text-gray-600 text-xs mt-1 leading-snug text-justify">
-      {about || "No description yet."}
-    </p>
-  </div>
-
-  {/* Action Buttons */}
-  <div className="flex gap-3 mt-3">
-    <button className="bg-black text-white px-4 py-1.5 rounded-full text-sm hover:bg-gray-800 transition">
-      Ignore
-    </button>
-    <button className="bg-white text-black border border-black px-4 py-1.5 rounded-full text-sm hover:bg-gray-200 transition">
-      Interested
-    </button>
-  </div>
-</div>
 
 
 </div>

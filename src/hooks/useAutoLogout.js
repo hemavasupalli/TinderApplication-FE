@@ -11,6 +11,12 @@ export default function useAutoLogout(userId) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = Cookies.get("token"); 
+
+    if (!token && userId) {
+      dispatch(removeUser());
+      navigate("/login");
+    }
     let idleTimer, sessionTimer;
 
     const logout = async () => {

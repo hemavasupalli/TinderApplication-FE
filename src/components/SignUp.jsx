@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { addUser } from "../utils/userSlice";
+import { addUser, removeUser } from "../utils/userSlice";
 import { BASE_URL } from "../constants";
 import { useNavigate } from "react-router-dom";
 
@@ -28,6 +28,7 @@ const SignUp = () => {
       setStep(2); // move to OTP step
       setErrorMsg("OTP sent to your email");
     } catch (err) {
+      dispatch(removeUser());
       console.error(err);
       const msg =
         err?.response?.data?.message || err?.response?.data || "Something went wrong";
@@ -49,6 +50,7 @@ const SignUp = () => {
       }
     } catch (err) {
       console.error(err);
+      dispatch(removeUser());
       const msg =
         err?.response?.data?.message || err?.response?.data || "Something went wrong";
       setErrorMsg(msg);
@@ -66,7 +68,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4">
+    <div className="flex justify-center items-center mt-10  bg-gray-50 px-4">
       <div className="bg-white shadow-lg rounded-2xl w-full max-w-md p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">
           {step === 1 ? "Sign Up" : "Verify OTP"}
