@@ -8,7 +8,7 @@ const UserViewCard = ({ feed, handleFeed }) => {
   const { _id, firstName, lastName, age, gender, about, photoUrl , isOnline , lastSeen } = feed;
 
   return (
-    <div className="relative bg-white shadow-xl rounded-2xl overflow-hidden w-full max-w-md flex flex-col min-h-[32rem]">
+    <div className="relative bg-white shadow-xl rounded-2xl overflow-hidden w-full max-w-md flex flex-col h-120 ">
       
       {/* Profile Image */}
       <figure className="relative w-full h-95 overflow-hidden">

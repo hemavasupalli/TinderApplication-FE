@@ -53,7 +53,7 @@ const Feed = () => {
     <div className="flex justify-center items-center h-screen p-4 bg-gray-50">
       {/* Display top profile */}
       <div className="w-full max-w-md sm:max-w-lg md:max-w-xl h-full">
-        <UserViewCard feed={feed[0]} handleFeed={handleFeed} className="h-full" />
+        <UserViewCard feed={feed[0]} handleFeed={handleFeed} />
       </div>
     </div>
   );
